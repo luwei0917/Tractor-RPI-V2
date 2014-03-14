@@ -1,4 +1,5 @@
 //This is the baby of Wei Lu
+//New
 
 DECK_NUM = 2;
 SUIT_NUM = 4;
