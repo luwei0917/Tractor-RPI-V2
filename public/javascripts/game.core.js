@@ -1,12 +1,5 @@
 //This is the baby of Wei Lu
-<<<<<<< HEAD
-//Nanyu Zeng is the King
-//My branch a
-//Hello
-=======
-//New
 
->>>>>>> master
 DECK_NUM = 2;
 SUIT_NUM = 4;
 VALUE_NUM = 13;
