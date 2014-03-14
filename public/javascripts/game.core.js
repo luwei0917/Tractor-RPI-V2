@@ -1,5 +1,5 @@
 //This is the baby of Wei Lu
-//Based on Nanyu Zeng's work
+//Zeng benben
 //My branch a
 //Hello
 DECK_NUM = 2;
