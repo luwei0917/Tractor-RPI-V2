@@ -52,14 +52,14 @@ $(document).ready(function(){
     $('#playbutton').click(function() {
         if(myturn){
             var list = [];
-            for(var i =0 ; i<chosen.length ; i++){
-                if(chosen[i]){
-                    list.push(mycards[i]);
-                }
+            var selected = $('#overlay').find('.select');
+            for (var i = 0; i < selected.length; i++)
+            {
+                list.push({suit:selected[i].getAttribute('msuit'), value:selected[i].getAttribute('mvalue')})
+                $('#' + selected[i].getAttribute('id')).css('display', 'none');
             }
+            console.log(list);
             send_msg ('usecard', list);
-            $("#overlay").empty();
-
         }
         else{
             $('#gogogo').text('Not your turn yet, Do not panic');
