@@ -53,14 +53,11 @@ $(document).ready(function(){
         if(myturn){
             var list = [];
             var selected = $('#overlay').find('.select');
-            //console.log($('#overlay').find('.select').attr('msuit'));
             for (var i = 0; i < selected.length; i++)
             {
-                //console.log(selected[i].getAttribute('msuit'));
                 list.push({suit:selected[i].getAttribute('msuit'), value:selected[i].getAttribute('mvalue')})
                 $('#' + selected[i].getAttribute('id')).css('display', 'none');
             }
-            //console.log($('#overlay').find('.select'));
             console.log(list);
             send_msg ('usecard', list);
         }
