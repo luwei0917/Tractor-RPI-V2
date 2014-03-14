@@ -227,7 +227,7 @@ function playing(players,gameInfo){
             debug('gamecore:: ' + player.userid );
             var cardsCombination = [];
             for(var i = 0; i< result.length ; i++){
-                var temp = new Card(result[i].suit, result[i].value);
+                var temp = new Card(result[i].suit, parseInt(result[i].value));
                 cardsCombination.push(temp);
                 console.log( ' used card ' + temp.suit + ' ' + temp.value);
             }
@@ -272,6 +272,7 @@ function deleteHand(player,cardsCombination){
     for(var i = 0; i<cardsCombination.length; i++){
         var index = find(player,cardsCombination[i]);
         if(index[0] === -1){
+            debug('not found');
             return -1;  // card not exists
         }
         cardsPosition.push(index);
