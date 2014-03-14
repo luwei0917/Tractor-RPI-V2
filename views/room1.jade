@@ -1,0 +1,40 @@
+doctype html
+head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/animate.min.css')
+    script(type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js')
+    script(type='text/javascript' src='/socket.io/socket.io.js')
+    script(type='text/javascript' src='/javascripts/index.js')
+    script(type='text/javascript' src='/javascripts/client.js')
+    script(type='text/javascript' src='/javascripts/room1.js')
+    script(type='text/javascript' src='/javascripts/poker.min.js')
+body
+    #roomtitle
+    h2 Welcome to Room 1!
+    #usedcardDiv1
+    p player1 used
+    #usedcardDiv2
+    p player2 used
+    #usedcardDiv3
+    p player3 used
+    #usedcardDiv4
+    p player4 used
+    br
+    #mycardDiv
+        #overlay
+    button#playbutton(type='button') MySubmit
+    br
+    button#IDominantSuit(type='button') DominantSuit
+    br
+    input#input1(type='text')
+    button#inputbutton(type='button') Submit
+    p can i go?
+    p#gogogo
+    p this is servermsg
+    P#servermsg
+    p#showcard
+    p#position
+    p#declaration
+    //button#button1(type='button') Button1
+    //button#button2(type='button') Button2

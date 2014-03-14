@@ -1,0 +1,13 @@
+{
+    "name": "tractor"
+  , "version": "0.0.1"
+  , "private": true
+  , "dependencies": {
+      "express": ">= 3.0.0"
+    , "stylus": ">= 0.0.1"
+    , "jade": ">= 0.0.1"
+    , "socket.io": "*"
+    , "node-uuid": "*"
+    , "mongodb": "*"
+  }
+}
