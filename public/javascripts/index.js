@@ -55,7 +55,7 @@ $(document).ready(function(){
             var selected = $('#overlay').find('.select');
             for (var i = 0; i < selected.length; i++)
             {
-                list.push({suit:selected[i].getAttribute('msuit'), value:selected[i].getAttribute('mvalue')})
+                list.push({suit:selected[i].getAttribute('msuit'), value:parseInt(selected[i].getAttribute('mvalue') )} )
                 $('#' + selected[i].getAttribute('id')).css('display', 'none');
             }
             console.log(list);
