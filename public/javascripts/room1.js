@@ -89,7 +89,7 @@ function parse_one_card(acard, idnum, clas) {
         suit = acard.suit;
         value = convert[acard.value];
     }
-    var $temp = $('<div>', {id: idnum.toString(), class: clas, msuit: suit, mvalue: value});
+    var $temp = $('<div>', {id: idnum.toString(), class: clas, msuit: acard.suit, mvalue: acard.value});
     $temp.addClass('animated slideInRight')
     $temp.append(Poker.getCardImage(100, suit, value));
     return $temp;
