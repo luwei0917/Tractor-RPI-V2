@@ -1,6 +1,7 @@
 //This is the baby of Wei Lu
-//Thu 11:14 PM
-//My branch a
+//ll
+
+//jiang an an
 DECK_NUM = 2;
 SUIT_NUM = 4;
 VALUE_NUM = 13;
@@ -126,7 +127,7 @@ function next(deck,i,players,gameInfo){
     }
 }
 
-function addCard(player,card,callback){
+function addCard(player,card){
     var num = 0;
     var done = false;
     for(var i =0 ;i< ALL_SUIT.length;i++){
@@ -226,6 +227,7 @@ function playing(players,gameInfo){
             debug('gamecore:: ' + player.userid );
             var cardsCombination = [];
             for(var i = 0; i< result.length ; i++){
+                result[i].value = parseInt(result[i].value);
                 var temp = new Card(result[i].suit, result[i].value);
                 cardsCombination.push(temp);
                 console.log( ' used card ' + temp.suit + ' ' + temp.value);
@@ -271,6 +273,7 @@ function deleteHand(player,cardsCombination){
     for(var i = 0; i<cardsCombination.length; i++){
         var index = find(player,cardsCombination[i]);
         if(index[0] === -1){
+            debug('not found');
             return -1;  // card not exists
         }
         cardsPosition.push(index);
