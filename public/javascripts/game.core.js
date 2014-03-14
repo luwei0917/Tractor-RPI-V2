@@ -1,5 +1,5 @@
 //This is the baby of Wei Lu
-//Zeng benben
+//Nanyu Zeng is the King. Nobody can change this.
 //My branch a
 //Hello
 DECK_NUM = 2;
