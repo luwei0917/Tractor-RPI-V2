@@ -127,7 +127,7 @@ function next(deck,i,players,gameInfo){
     }
 }
 
-function addCard(player,card,callback){
+function addCard(player,card){
     var num = 0;
     var done = false;
     for(var i =0 ;i< ALL_SUIT.length;i++){
@@ -227,7 +227,8 @@ function playing(players,gameInfo){
             debug('gamecore:: ' + player.userid );
             var cardsCombination = [];
             for(var i = 0; i< result.length ; i++){
-                var temp = new Card(result[i].suit, parseInt(result[i].value));
+                result[i].value = parseInt(result[i].value);
+                var temp = new Card(result[i].suit, result[i].value);
                 cardsCombination.push(temp);
                 console.log( ' used card ' + temp.suit + ' ' + temp.value);
             }
