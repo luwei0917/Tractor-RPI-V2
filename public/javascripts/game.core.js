@@ -227,7 +227,7 @@ function playing(players,gameInfo){
             debug('gamecore:: ' + player.userid );
             var cardsCombination = [];
             for(var i = 0; i< result.length ; i++){
-                result[i].value = parseInt(result[i].value);
+                //result[i].value = parseInt(result[i].value);
                 var temp = new Card(result[i].suit, result[i].value);
                 cardsCombination.push(temp);
                 console.log( ' used card ' + temp.suit + ' ' + temp.value);
