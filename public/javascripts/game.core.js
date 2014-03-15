@@ -165,8 +165,8 @@ function addCard(player,card){
 function sendCard(card,player,dominantRank,callback){
     addCard(player,card);
 
-    var time = 0.01*1000;  // 0.01s
-    //var time = 0.25*1000;
+    //var time = 0.01*1000;  // 0.01s
+    var time = 0.25*1000;
     var IsDominantSuit = false;
     if(card.value === dominantRank && card.suit != 'jokers'){
         player.emit('declaration');
