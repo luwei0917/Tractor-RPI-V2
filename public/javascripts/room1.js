@@ -1,21 +1,7 @@
-var chosen = [];
 convert = ['X', 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 $(document).ready(function () {
 
     $("#overlay").empty();
-
-//    $.fn.myfunction = function (context, ccc) {
-//        //$("#overlay").empty();
-//        $('#servermsg').text(ccc);
-//        mycards = context;
-//        //alert(value);
-//        //alert(suit);
-//        chosen = [];
-//        var suit = 'nothing';
-//        var value = -1;
-//
-//        display_my_cards(context);
-//    };
 
     connect_to_server();
 });
@@ -34,7 +20,6 @@ function parse_cards(context, clas) {
     res = [];
     for (var i = 0; i < context.length; i++) {
         var $temp = $('<div>', {id: i.toString(), class: clas});
-        $temp.addClass('animated slideInRight')
 
         if (context[i].suit === "jokers") {
             if (context[i].value === 1) {
@@ -50,7 +35,7 @@ function parse_cards(context, clas) {
             suit = context[i].suit;
             value = convert[context[i].value];
         }
-        chosen.push(0);
+        //chosen.push(0);
         $temp.append(Poker.getCardImage(100, suit, value));
         res.push($temp);
     }
@@ -76,30 +61,19 @@ function display_one_more_card(acard, idnum, clas, pos)
     {
         $('.cards:nth-child(' +(pos).toString() + ')').after(parsed);
     }
-    //$('#overlay').append(parsed);
-    //$('#overlay:nth-child(' + (0).toString +')').after(parsed);
-    //else
-        //$('#overlay').children(':eq(' +(1).toString() + ')').after(parsed);
-//    console.log( $('#overlay').children(':eq(' +(pos).toString() + ')'));
-
-
-    $('.cards').click(function(){
-        //alert(this.id);
+    $('#'+idnum.toString()).click(function(){
         if ($(this).hasClass('select')){
-            chosen[this.id] = 0;
             $(this).animate({top:'+=20px'},1);
             $(this).removeClass('select')
         }else{
-            chosen[this.id] = 1;
             $(this).animate({top:'-=20px'},1);
             $(this).addClass('select')
         }
     });
+
 }
 
 function parse_one_card(acard, idnum, clas) {
-    var $temp = $('<div>', {id: idnum.toString(), class: clas});
-    $temp.addClass('animated slideInRight')
 
     if (acard.suit === "jokers") {
         if (acard.value === 1) {
@@ -115,7 +89,8 @@ function parse_one_card(acard, idnum, clas) {
         suit = acard.suit;
         value = convert[acard.value];
     }
-    chosen.push(0);
+    var $temp = $('<div>', {id: idnum.toString(), class: clas, msuit: acard.suit, mvalue: acard.value});
+    $temp.addClass('animated slideInRight')
     $temp.append(Poker.getCardImage(100, suit, value));
     return $temp;
 }

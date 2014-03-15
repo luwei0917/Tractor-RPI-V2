@@ -127,7 +127,7 @@ function next(deck,i,players,gameInfo){
     }
 }
 
-function addCard(player,card,callback){
+function addCard(player,card){
     var num = 0;
     var done = false;
     for(var i =0 ;i< ALL_SUIT.length;i++){
@@ -165,8 +165,8 @@ function addCard(player,card,callback){
 function sendCard(card,player,dominantRank,callback){
     addCard(player,card);
 
-    var time = 0.01*1000;  // 0.01s
-    //var time = 0.25*1000;
+    //var time = 0.01*1000;  // 0.01s
+    var time = 0.25*1000;
     var IsDominantSuit = false;
     if(card.value === dominantRank && card.suit != 'jokers'){
         player.emit('declaration');
@@ -227,6 +227,7 @@ function playing(players,gameInfo){
             debug('gamecore:: ' + player.userid );
             var cardsCombination = [];
             for(var i = 0; i< result.length ; i++){
+                //result[i].value = parseInt(result[i].value);
                 var temp = new Card(result[i].suit, result[i].value);
                 cardsCombination.push(temp);
                 console.log( ' used card ' + temp.suit + ' ' + temp.value);
@@ -272,6 +273,7 @@ function deleteHand(player,cardsCombination){
     for(var i = 0; i<cardsCombination.length; i++){
         var index = find(player,cardsCombination[i]);
         if(index[0] === -1){
+            debug('not found');
             return -1;  // card not exists
         }
         cardsPosition.push(index);
