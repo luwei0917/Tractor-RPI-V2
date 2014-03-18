@@ -1,6 +1,13 @@
 //This is the baby of Wei Lu
+<<<<<<< HEAD
 //lalala
 //123
+=======
+//7:00pm
+//nihao
+//aaaa
+//wo shi tian cai
+>>>>>>> Wei_Lu
 DECK_NUM = 2;
 SUIT_NUM = 4;
 VALUE_NUM = 13;
