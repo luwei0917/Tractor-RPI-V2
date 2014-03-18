@@ -1,7 +1,7 @@
 //This is the baby of Wei Lu
 //7:00pm
 //nihao
-//aa
+//aaaa
 //wo shi tian cai
 DECK_NUM = 2;
 SUIT_NUM = 4;
