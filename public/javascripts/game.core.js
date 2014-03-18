@@ -1,5 +1,11 @@
 //This is the baby of Wei Lu
+<<<<<<< HEAD
 //7:00pm
+=======
+//Tue 4:15pm
+
+
+>>>>>>> Wei_Lu
 DECK_NUM = 2;
 SUIT_NUM = 4;
 VALUE_NUM = 13;
