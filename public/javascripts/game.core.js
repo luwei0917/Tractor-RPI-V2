@@ -1,8 +1,5 @@
 //This is the baby of Wei Lu
-//lalala
-//123
-//sdfdsf
-//today
+//luwei
 DECK_NUM = 2;
 SUIT_NUM = 4;
 VALUE_NUM = 13;
