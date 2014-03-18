@@ -2,6 +2,7 @@
 //lalala
 //123
 //sdfdsf
+//today
 DECK_NUM = 2;
 SUIT_NUM = 4;
 VALUE_NUM = 13;
