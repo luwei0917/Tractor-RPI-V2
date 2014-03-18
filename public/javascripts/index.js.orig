@@ -57,7 +57,11 @@ $(document).ready(function(){
             {
                 list.push({suit:selected[i].getAttribute('msuit'), value:parseInt(selected[i].getAttribute('mvalue') )} )
                 $('#' + selected[i].getAttribute('id')).css('display', 'none');
+<<<<<<< HEAD
+                //$('#' + selected[i].getAttribute('id')).css('display', 'none');
+=======
                 $('#' + selected[i].getAttribute('id')).removeClass('select');
+>>>>>>> master
             }
             console.log(list);
             send_msg ('usecard', list);
