@@ -1,5 +1,9 @@
 //This is the baby of Wei Lu
+<<<<<<< HEAD
 
+=======
+//Tue 6:35pm
+>>>>>>> FETCH_HEAD
 DECK_NUM = 2;
 SUIT_NUM = 4;
 VALUE_NUM = 13;
