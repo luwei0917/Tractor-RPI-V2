@@ -1,7 +1,7 @@
 //This is the baby of Wei Lu
 //ll
 
-//jiang an an
+//Tue 4:15pm
 DECK_NUM = 2;
 SUIT_NUM = 4;
 VALUE_NUM = 13;
