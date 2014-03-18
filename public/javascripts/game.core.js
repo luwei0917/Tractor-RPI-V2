@@ -1,6 +1,6 @@
 //This is the baby of Wei Lu
 //ll
-
+//Zeng ben ben
 //Tue 4:15pm
 DECK_NUM = 2;
 SUIT_NUM = 4;
@@ -235,36 +235,39 @@ function playing(players,gameInfo){
             //cardsCombination.push(oneCard);
             var isLegal = deleteHand(player , cardsCombination);  // -1 means not legal
             // if want he want to play is not legal. Tell him.
-            if (isLegal === -1){
-                players[i].emit('DoAgain');
-            }
-            else{
-                //debug(5);
-                updateHand(player);
-                player.broadcast.to(player.game).emit('otherTricks',result,gameInfo.currentPlayer);
-                player.emit('otherTricks',result,gameInfo.currentPlayer);
-
-                player.emit('stop');
-                //next
-                gameInfo.count++;
-                if(gameInfo.count === 4){
-                    // new
-                    gameInfo.count = 0;
-                    gameInfo.currentPlayer = gameInfo.leader;
+            deleteHand(player , cardsCombination,function(isLegal){
+                if (isLegal === -1){
+                    players[i].emit('DoAgain');
                 }
-                else if(gameInfo.count < 4){
-                    gameInfo.currentPlayer =nextPlayer(gameInfo.currentPlayer);
-                }
-                var myPos = gameInfo.currentPlayer;
-                players[myPos].emit('go');
+                else{
+                    //debug(5);
+                    updateHand(player);
+                    player.broadcast.to(player.game).emit('otherTricks',result,gameInfo.currentPlayer);
+                    player.emit('otherTricks',result,gameInfo.currentPlayer);
 
-            }
+                    player.emit('stop');
+                    //next
+                    gameInfo.count++;
+                    if(gameInfo.count === 4){
+                        // new
+                        gameInfo.count = 0;
+                        gameInfo.currentPlayer = gameInfo.leader;
+                    }
+                    else if(gameInfo.count < 4){
+                        gameInfo.currentPlayer =nextPlayer(gameInfo.currentPlayer);
+                    }
+                    var myPos = gameInfo.currentPlayer;
+                    players[myPos].emit('go');
+
+                }
+            });
+
         })
     }
 }
 
 
-function deleteHand(player,cardsCombination){
+function deleteHand(player,cardsCombination,callback){
     console.log(cardsCombination);
     //console.log(player.cards);
 
@@ -274,7 +277,8 @@ function deleteHand(player,cardsCombination){
         var index = find(player,cardsCombination[i]);
         if(index[0] === -1){
             debug('not found');
-            return -1;  // card not exists
+            //return -1;  // card not exists
+            callback(-1);
         }
         cardsPosition.push(index);
     }
@@ -292,7 +296,8 @@ function deleteHand(player,cardsCombination){
         debug('deletedone');
 
     }
-    return 1;  //means good
+    callback(1);
+    //return 1;  //means good
 }
 
 
