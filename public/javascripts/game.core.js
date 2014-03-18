@@ -235,7 +235,7 @@ function playing(players,gameInfo){
             //cardsCombination.push(oneCard);
             var isLegal = deleteHand(player , cardsCombination);  // -1 means not legal
             // if want he want to play is not legal. Tell him.
-            deleteHand(player , cardsCombination);
+            //deleteHand(player , cardsCombination);
             if (isLegal === -1){
                 players[i].emit('DoAgain');
             }
