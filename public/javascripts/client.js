@@ -3,7 +3,6 @@ var myturn = false;
 var DominantSuitChance = false;
 function connect_to_server ()
 {
-
     socket = io.connect();
     socket.on('connect', function(){
         this.state = 'connecting';
@@ -72,6 +71,15 @@ function connect_to_server ()
         $('#usedcardDiv4').empty();
         $("#overlay").empty();
     })
+
+    socket.on('DealDone',function(){
+        var selected = $('#overlay').find('.cards');
+        for (var i = 0; i < selected.length; i++)
+        {
+            $('#' + selected[i].getAttribute('id')).removeClass('animated slideInRight');
+        }
+    })
+
     socket.on('DoAgain', function() {
         $('#gogogo').text('Not legal, try again');
         //$('trick').text('hahahaha');
