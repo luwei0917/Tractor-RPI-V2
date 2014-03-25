@@ -119,11 +119,13 @@ function next(deck,i,players,gameInfo){
 
         for(var i =0 ;i<4 ;i++){
             updateHand(players[i]);
+            players[i].emit('DealDone');
         }
         //updateHand(players[j]);
         //sortCards(players);
         debug('Dealing Done');
-
+        //wait for dealer to do kitty;
+        kitty(players[j],gameInfo);
         playing(players,gameInfo)
 
     }
