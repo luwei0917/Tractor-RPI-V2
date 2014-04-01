@@ -2,7 +2,7 @@
 //lalala
 //123
 //sdfdsf
-//today is April Fool
+//April Fool
 //hi
 DECK_NUM = 2;
 SUIT_NUM = 4;
