@@ -269,7 +269,32 @@ function playing(players,gameInfo){
         })
     }
 }
-function checkRule(){
+
+
+function isConsecutivePair(cardCombination,gameInfo){
+    //is Consecutive Pair
+
+}
+
+function isOnePair(cardCombination,gameInfo){
+    //is one pair
+
+}
+function isTwoPair(cardCombination,gameInfo){
+    //is two pair
+
+}
+function isThirdPair(cardCombination,gameInfo){
+    //is third pair
+
+}
+
+function checkRule(cardsCombination,gameInfo){
+    // is all in one suit
+
+    // count how many pair
+
+
 
 }
 
