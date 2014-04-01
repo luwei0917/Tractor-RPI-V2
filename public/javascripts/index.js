@@ -68,6 +68,26 @@ $(document).ready(function(){
         }
     })
 
+    $('#maidibutton').click(function() {
+        var list = [];
+        var selected = $('#overlay').find('.select');
+        if (selected.length != 8)
+        {
+            return alert('you have to select 8 cards');
+        }
+        for (var i = 0; i < selected.length; i++)
+        {
+            list.push({suit:selected[i].getAttribute('msuit'), value:parseInt(selected[i].getAttribute('mvalue') )} )
+            $('#' + selected[i].getAttribute('id')).css('display', 'none');
+            $('#' + selected[i].getAttribute('id')).removeClass('select');
+            //hehe
+        }
+        console.log(list);
+        send_msg ('usecard', list);
+        $('#maidibutton').css('visibility', 'hidden');
+    })
+
+
 //DominantSuit
     $('#IDominantSuit').click(function() {
         if(DominantSuitChance){
