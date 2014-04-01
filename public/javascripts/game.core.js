@@ -125,9 +125,7 @@ function next(deck,i,players,gameInfo){
         //sortCards(players);
         debug('Dealing Done');
         //wait for dealer to do kitty;
-        kitty(players[j],gameInfo,function(){
-            playing(players,gameInfo);
-        });
+        kitty(players[j],gameInfo,players);
 
 
     }
@@ -269,7 +267,32 @@ function playing(players,gameInfo){
         })
     }
 }
-function checkRule(){
+
+
+function isConsecutivePair(cardCombination,gameInfo){
+    //is Consecutive Pair
+
+}
+
+function isOnePair(cardCombination,gameInfo){
+    //is one pair
+
+}
+function isTwoPair(cardCombination,gameInfo){
+    //is two pair
+
+}
+function isThirdPair(cardCombination,gameInfo){
+    //is third pair
+
+}
+
+function checkRule(cardsCombination,gameInfo){
+    // is all in one suit
+
+    // count how many pair
+
+
 
 }
 
@@ -333,13 +356,26 @@ function updateScore(players){
 }
 
 
-function kitty(player,gameInfo){
+function kitty(player,gameInfo,players){
     player.emit('kitty');
     //TODO: kitty
 
     //pos = nextPlayer(pos);
-    player.on('kittyCome', function(result) {
+    player.on('kittyCome', function(cardsCombination) {
+        console.log(cardsCombination);
+        //console.log(player.cards);
 
+        // first make sure you have the cards you want to play
+        for(var i = 0; i<cardsCombination.length; i++){
+            var index = find(player,cardsCombination[i]);
+            if(index[0] === -1){
+                debug('not found');
+                return -1;  // card not exists
+            }
+            delete (player.suit[index[0][index[1]]]);
+            //player.suit[index[0]].splice(index[1],1);
+        }
+        playing(players,gameInfo);
     })
 
 }

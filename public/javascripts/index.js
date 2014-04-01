@@ -83,7 +83,7 @@ $(document).ready(function(){
             //hehe
         }
         console.log(list);
-        send_msg ('usecard', list);
+        send_msg ('kittyCome', list);
         $('#maidibutton').css('visibility', 'hidden');
     })
 
