@@ -125,8 +125,10 @@ function next(deck,i,players,gameInfo){
         //sortCards(players);
         debug('Dealing Done');
         //wait for dealer to do kitty;
-        kitty(players[j],gameInfo);
-        playing(players,gameInfo)
+        kitty(players[j],gameInfo,function(){
+            playing(players,gameInfo);
+        });
+
 
     }
 }
@@ -237,7 +239,7 @@ function playing(players,gameInfo){
                 console.log( ' used card ' + temp.suit + ' ' + temp.value);
             }
             //cardsCombination.push(oneCard);
-            var isLegal = deleteHand(player , cardsCombination);  // -1 means not legal
+            var isLegal = deleteHand(player , cardsCombination,gameInfo);  // -1 means not legal
             // if want he want to play is not legal. Tell him.
             //deleteHand(player , cardsCombination);
             if (isLegal === -1){
@@ -267,9 +269,11 @@ function playing(players,gameInfo){
         })
     }
 }
+function checkRule(){
 
+}
 
-function deleteHand(player,cardsCombination){
+function deleteHand(player,cardsCombination,gameInfo){
     console.log(cardsCombination);
     //console.log(player.cards);
 
@@ -285,6 +289,13 @@ function deleteHand(player,cardsCombination){
     }
 
     //check all the rules, make sure it's legal
+//    this.dominantSuit = 'unknown';
+//    this.dominantRank = 2;
+//    this.dealer = -1;
+//    this.leader = -1;
+
+    var dominantSuit = gameInfo.dominantSuit;  //trump
+    var dominantRank = gameInfo.dominantRank;
 
 
     //it's legal, so delete the cards in my hands.
@@ -325,6 +336,12 @@ function updateScore(players){
 function kitty(player,gameInfo){
     player.emit('kitty');
     //TODO: kitty
+
+    //pos = nextPlayer(pos);
+    player.on('kittyCome', function(result) {
+
+    })
+
 }
 
 function One_game(players,gameInfo){
@@ -343,7 +360,7 @@ function One_game(players,gameInfo){
     }
 
     Dealing(players,gameInfo);
-    kitty(players[gameInfo.dealer],gameInfo);
+    //kitty(players[gameInfo.dealer],gameInfo);
     // updateScore(players);
     //playing(players,gameInfo);
 }
