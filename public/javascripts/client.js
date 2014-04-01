@@ -80,6 +80,11 @@ function connect_to_server ()
         }
     })
 
+    socket.on('kitty',function(){
+        //alert('i mai di');
+        $('#maidibutton').css('visibility', 'visible');
+    })
+
     socket.on('DoAgain', function() {
         $('#gogogo').text('Not legal, try again');
         //$('trick').text('hahahaha');
