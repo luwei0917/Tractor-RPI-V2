@@ -288,6 +288,7 @@ function isThirdPair(cardCombination,gameInfo){
 }
 
 function checkRule(cardsCombination,gameInfo){
+    //
     // is all in one suit
 
     // count how many pair
@@ -310,8 +311,9 @@ function deleteHand(player,cardsCombination,gameInfo){
         }
         cardsPosition.push(index);
     }
-
+    //check
     //check all the rules, make sure it's legal
+
 //    this.dominantSuit = 'unknown';
 //    this.dominantRank = 2;
 //    this.dealer = -1;
