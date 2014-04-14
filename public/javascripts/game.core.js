@@ -1,7 +1,15 @@
 //This is the baby of Wei Lu
+<<<<<<< HEAD
 //Mon 7:31pm
 
 
+=======
+//lalala
+//123
+//sdfdsf
+//April Fool
+//hi
+>>>>>>> remotes/origin/master
 DECK_NUM = 2;
 SUIT_NUM = 4;
 VALUE_NUM = 13;
