@@ -20,6 +20,8 @@ var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 var routes = require('./routes');
 var room = require('./routes/room.js');
+var loginpage = require('./routes/loginpage.js');
+
 server.listen(8082);
 // Configuration
 
@@ -43,9 +45,10 @@ app.configure(function(){
 });
 
 // Routes
-
+var AM = require('./public/javascripts/account-manager');
 app.get('/', routes.index);
 app.get('/room1', room.room1);
+app.get('/loginpage', loginpage.loginpage);
 
 
 //app.listen(process.env.PORT);
