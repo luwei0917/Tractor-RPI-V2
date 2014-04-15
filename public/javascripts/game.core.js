@@ -1,5 +1,5 @@
 //This is the baby of Wei Lu
-//llhh
+
 //Mon 7:31pm
 //8:44pm
 DECK_NUM = 2;
@@ -288,7 +288,6 @@ function playing(players,gameInfo){
 
 function isConsecutivePair(cardCombination,gameInfo){
     //is Consecutive Pair
-
 }
 
 function isOnePair(cardCombination,gameInfo){
@@ -332,7 +331,15 @@ function isSingle(cardCombination, gameInfo){
 }
 function isMultiple(cardCombination,gameInfo){
     //Combination of multiple cards
-    return false;
+    var roundSuit = cardCombination[0].suit;
+    for (var i; i<cardCombination.length;i++) {
+        if (cardCombination[i].suit != roundSuit) {
+            return false;
+        }
+    }
+    gameInfo.roundRule = 'isMultiple';
+    gameInfo.highCombination = cardCombination.slice(0);
+    return true;
 }
 
 function checkRules(cardCombination, gameInfo){
