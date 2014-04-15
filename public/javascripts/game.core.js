@@ -230,14 +230,14 @@ function playing(players,gameInfo){
         if(ALL_SUIT[i] === gameInfo.dominantSuit){
             dominantSuit = i;
         }
-    }
-    for (var i =0 ;i<4 ;i++){
-        for(var j = 0; j < players[i].suit[0].length ; j++){
-            var temp = new Card(players[i].suit[0][j].suit , players[i].suit[0][j].value+15);
-             // A is 14, other domintant rank is 15, joker is 16.
-            players[i].suit[dominantSuit].push(temp);
-        }
-    }
+    }   }
+//    for (var i =0 ;i<4 ;i++){
+//        for(var j = 0; j < players[i].suit[0].length ; j++){
+//            var temp = new Card(players[i].suit[0][j].suit , players[i].suit[0][j].value+15);
+//             // A is 14, other domintant rank is 15, joker is 16.
+//            players[i].suit[dominantSuit].push(temp);
+//        }
+//
     var done = false;
 
     gameInfo.count = 0;
