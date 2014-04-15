@@ -1,5 +1,5 @@
 //This is the baby of Wei Lu
-//llhh
+
 //Mon 7:31pm
 //8:44pm
 DECK_NUM = 2;
@@ -288,7 +288,6 @@ function playing(players,gameInfo){
 
 function isConsecutivePair(cardCombination,gameInfo){
     //is Consecutive Pair
-
 }
 
 function isOnePair(cardCombination,gameInfo){
