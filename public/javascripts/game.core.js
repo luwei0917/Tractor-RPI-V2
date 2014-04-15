@@ -249,7 +249,7 @@ function playing(players,gameInfo){
                 console.log( ' used card ' + temp.suit + ' ' + temp.value);
             }
             //cardsCombination.push(oneCard);
-            var isLegal = deleteHand(player , cardsCombination,gameInfo);  // -1 means not legal
+            var isLegal = deleteHand(player , cardsCombination,gameInfo, players);  // -1 means not legal
             // if want he want to play is not legal. Tell him.
             //deleteHand(player , cardsCombination);
             if (isLegal === -1){
@@ -342,7 +342,7 @@ function isMultiple(cardCombination,gameInfo){
     return true;
 }
 
-function checkRules(cardCombination, gameInfo){
+function checkRules(cardCombination, gameInfo, players){
     //Are you the leader?
     var isLeader = false;
     if(gameInfo.currentPlayer === gameInfo.leader) {
@@ -426,13 +426,16 @@ function checkRules(cardCombination, gameInfo){
             }
 
         }
+        else if(rule === 'isConsecutivePair'){
+
+        }
         else if(rule === 'isMultiple'){
 
         }
     }
 }
 
-function deleteHand(player,cardsCombination,gameInfo){
+function deleteHand(player,cardsCombination,gameInfo ,players){
     console.log(cardsCombination);
     //console.log(player.cards);
 
@@ -449,7 +452,7 @@ function deleteHand(player,cardsCombination,gameInfo){
     //check
     //check all the rules, make sure it's legal
     //sort with
-    var isLegal = checkRules(cardsCombination,gameInfo);
+    var isLegal = checkRules(cardsCombination,gameInfo,players);
     if(isLegal === -1){
         return -2;
     }
