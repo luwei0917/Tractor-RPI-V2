@@ -8,7 +8,7 @@ $(document).ready(function () {
 
 function display_used_cards(context, num)
 {
-    var parsed = parse_cards(context, 'cards');
+    var parsed = parse_cards(context, 'cards', num);
     parsed.forEach(function(e){
         var div = '#usedcardDiv' + (num+1).toString();
         $(div).append(e);
@@ -16,10 +16,10 @@ function display_used_cards(context, num)
     //$('#usedcardDiv').append($('<div class="playernum"><p>player ' + (num+1).toString() + '</p></div>'));
 }
 
-function parse_cards(context, clas) {
+function parse_cards(context, clas, num) {
     res = [];
     for (var i = 0; i < context.length; i++) {
-        var $temp = $('<div>', {id: i.toString(), class: clas});
+        var $temp = $('<div>', {id: (i + (num + 1) * 100).toString(), class: clas});
 
         if (context[i].suit === "jokers") {
             if (context[i].value === 1) {
