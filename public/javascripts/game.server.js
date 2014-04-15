@@ -61,6 +61,10 @@ game_server.createGame = function(player) {
     return game_instance;
 }
 
+socket.on('PlayerName',function(){
+
+})
+
 require('./game.core.js');
 
 game_server.startGame = function(game_instance, player){
