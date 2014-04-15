@@ -238,7 +238,9 @@ function reorganize(players,gameInfo){
         for(var j =0;j< player.suit.length ;j++ ){
             var suit = player.suit[j];
             //where to go
-            for(var k = 0; k < gameInfo.)
+            for(var k = 0; k < gameInfo.allSuits.length;k++){
+
+            }
             for(var k = 0; k < suit.length; k++){
                 // go to the right suit
 
@@ -311,11 +313,11 @@ function playing(players,gameInfo){
             // if want he want to play is not legal. Tell him.
             //deleteHand(player , cardsCombination);
             if (isLegal === -1){
-                players[i].emit('DoAgain');
+                player.emit('DoAgain');
             }
             else if(isLegal === -2){
-                players[i].emit('DoAgain');
-                players[i].emit('sysInfo','Not match with the leader')
+                player.emit('DoAgain');
+                player.emit('sysInfo','Not match with the leader')
             }
             else{
                 //debug(5);
@@ -564,6 +566,7 @@ function checkRules(cardCombination, gameInfo, players){
 
     }
     else{
+        return true;
         //follower
         var rule = gameInfo.roundRule;
         if(rule === 'isOnePair'){
