@@ -467,9 +467,11 @@ function isMultiple(cardCombination, gameInfo, players) {
                     if (cardCombination.length === 2 && (cardCombination[0].value === cardCombination[1].value) &&
                         (cardCombination[0].suit === cardCombination[1].suit)) {
                         gameInfo.roundRule = 'isOnePair';
+                        debug('Multiple cards with one pair');
                     }
                     else {
                         gameInfo.roundRule = 'isSingle';
+                        debug('Multiple cards with single');
                     }
                     var wang = false;
                     if (gameInfo.dominantSuit === cardCombination[0].suit) {
@@ -487,6 +489,7 @@ function isMultiple(cardCombination, gameInfo, players) {
 
     gameInfo.roundRule = 'isMultiple';
     gameInfo.highCombination = cardCombination.slice(0);
+    debug('Just multiple cards');
     return true;
 }
 
