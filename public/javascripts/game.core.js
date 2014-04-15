@@ -347,14 +347,50 @@ function isSingle(cardCombination, gameInfo){
 
     return false;
 }
-function isMultiple(cardCombination,gameInfo){
+function isMultiple(cardCombination, gameInfo, players) {
     //Combination of multiple cards
     var roundSuit = cardCombination[0].suit;
-    for (var i; i<cardCombination.length;i++) {
+    for (var i = 0; i < cardCombination.length; i++) {
         if (cardCombination[i].suit != roundSuit) {
             return false;
         }
     }
+    var smallestCardFirst = 0;
+    var suitNumber = 0;
+    for (var i = 0; i < ALL_SUIT.length; i++) {
+        if (ALL_SUIT[i] === cardCombination[0].suit)
+            suitNumber = i;
+    }
+    for (var i = 0; i < cardCombination.length; i++) {
+        if (cardCombination[i].value < cardCombination[smallestCardFirst].value) {
+            smallestCardFirst = i;
+        }
+    }
+    for (var i = 0; i < players.length; i++) {
+        if (i != players.leader) {
+            for (var j = 0; players[i].suit[suitNumber].length; j++) {
+                if (players[i].suit[suitNumber][j].value > cardCombination[smallestCardFirst].value) {
+                    if (cardCombination.length === 2 && (cardCombination[0].value === cardCombination[1].value) &&
+                        (cardCombination[0].suit === cardCombination[1].suit)) {
+                        gameInfo.roundRule = 'isOnePair';
+                    }
+                    else {
+                        gameInfo.roundRule = 'isSingle';
+                    }
+                    var wang = false;
+                    if (gameInfo.dominantSuit === cardCombination[0].suit) {
+                        wang = true;
+                    }
+                    if (gameInfo.dominantRank === cardCombination[0].value) {
+                        wang = true;
+                    }
+                    gameInfo.highCombination = [wang, cardCombination[0].suit, cardCombination[0].value ];
+                    return true;
+                }
+            }
+        }
+    }
+
     gameInfo.roundRule = 'isMultiple';
     gameInfo.highCombination = cardCombination.slice(0);
     return true;
@@ -421,7 +457,7 @@ function checkRules(cardCombination, gameInfo, players){
         //   Consecutive non-trump doubles may only be ruffed by consecutive trump doubles.
         //    Any combinations with cards that are not trump, yet do not follow the suit lead may not take the trick.
         //The table below describes whether some combinations are considered as consecutive doubles; if otherwise, the cards may still be lead, but will instead follow the multiple-cards combination rules (see next section).
-        else if (isMultiple(cardCombination, gameInfo)) {
+        else if (isMultiple(cardCombination, gameInfo, players)) {
 
         }
 
