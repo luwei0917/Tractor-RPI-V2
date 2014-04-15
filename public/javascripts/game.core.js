@@ -229,7 +229,7 @@ function playing(players,gameInfo){
         if(ALL_SUIT[i] === gameInfo.dominantSuit){
             dominantSuit = i;
         }
-    }   }
+    }
 //    for (var i =0 ;i<4 ;i++){
 //        for(var j = 0; j < players[i].suit[0].length ; j++){
 //            var temp = new Card(players[i].suit[0][j].suit , players[i].suit[0][j].value+15);
