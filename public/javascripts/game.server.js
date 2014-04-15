@@ -61,9 +61,9 @@ game_server.createGame = function(player) {
     return game_instance;
 }
 
-socket.on('PlayerName',function(){
-
-})
+//socket.on('PlayerName',function(){
+//
+//})
 
 require('./game.core.js');
 
