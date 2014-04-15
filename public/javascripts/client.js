@@ -100,6 +100,12 @@ function connect_to_server ()
         $('#gogogo').text('you can go');
     })
 
+
+    socket.on('sysInfo', function(message) {
+        $('#gogogo').text(message);
+    })
+
+
     socket.on('dealer',function(){
         $('#position').text('you are dealer');
     })

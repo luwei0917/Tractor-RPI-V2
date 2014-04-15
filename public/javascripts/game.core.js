@@ -10,7 +10,6 @@ ALL_SUIT =['jokers','spades','hearts','diamonds','clubs'];
 function Card(my_suit,my_value){
     this.suit = my_suit;
     this.value = my_value;
-
 }
 
 function playerProperty(players){
@@ -71,6 +70,9 @@ function GameInfo(){
     this.dealer = -1;
     this.leader = -1;
     this.currentPlayer = -1;
+    this.highCombination = [];
+    this.nextRoundLeader = -1;
+    this.roundRule = 'unknown';
     this.kitty = [];
 
 }
@@ -118,6 +120,12 @@ function next(deck,i,players,gameInfo){
         for(var i =0 ;i<4 ;i++){
             updateHand(players[i]);
             players[i].emit('DealDone');
+            //In the first round, every team starts with a score of 2.
+            // For teams are not separated into Declarers or Opponents yet,
+            // players should reveal any "2" card from the cards he drew as quickly as possible;
+            // the first to do so will instantly become the Dealer.
+            // His team will thus become the Declarers while the other team will become the Opponents.
+            players[i].emit('sysInfo','Wait for dealer to do kitty');
         }
         //updateHand(players[j]);
         //sortCards(players);
@@ -208,6 +216,13 @@ function nextPlayer(i){
 }
 
 function playing(players,gameInfo){
+    //The Dealer leads the first trick with any single card or combinations of cards, and the game proceeds like most trick-taking games,
+    // where players take turn to play their cards in a counter-clockwise direction,
+    // and the player who plays the highest-ordered card or combination of cards take the trick and leads the next round.
+    // All cards taken by the Declarers may be discarded for the rest of the round;
+    // point cards taken by the Opponents count towards their number of points collected,
+    // and should be kept, but other cards may be similarly discarded.
+
     console.log('OK. please start your trick');
     var done = false;
 
@@ -285,13 +300,36 @@ function isThirdPair(cardCombination,gameInfo){
 
 }
 
-function checkRule(cardsCombination,gameInfo){
-    //
-    // is all in one suit
+function isSingle(cardCombination, gameInfo){
 
-    // count how many pair
+}
 
+function checkRules(cardCombination, gameInfo){
+    //Are you the leader?
+    if(gameInfo.currentPlayer === gameInfo.leader){
+        //A lead may be of one of four types, each with different rules dealing with what can be played on it.
+        // As a rule of thumb, when any card or combination of cards is lead, other players must always follow the number of card(s) played.
 
+        //Single or double cards
+        //Any single card may be lead. Players must follow suit if they have cards in the same suit;
+        // if a trump card is lead, other players must play a trump card, if they still have any.
+        // The highest trump, or, if no trump is played, the highest-ordered card of the suit lead takes the trick.
+        // In case of ties, the first highest card played wins the trick.
+        if(isSingle(cardsCombination,gameInfo)){
+
+        }
+        //Only two identical cards are considered doubles, so two different-suited trump rank cards,
+        // two ordinary non-trump cards with the same value, or a combination of a Red Joker and a Black Joker are not counted.
+        // For example, if 7♣ is trump, 7♠-7♥, or Q♠-Q♦ are not considered doubles despite them being of equal rank (or in the first case, both in the trump suit).
+        else if(isOnePair(cardsCombination,gameInfo)){
+
+        }
+        //For double cards lead, other players must also follow suit with double cards, if they have;
+        // for players who do not have double cards in the suit lead, they may either play separate cards in the same suit,
+        // any two cards from other suits, or a double from the trump suit to ruff the trick. In this case, the highest-ordered trump doubles,
+        // if they are played, wins the trick; otherwise the highest-ordered doubles in the suit lead wins.
+        // Two singles may not beat a double even if they are both higher-ordered than the double (for trump 7♣, 9♦-9♦ beats J♦-Q♦ or even J♣-Q♣, if diamond doubles were led).
+    }
 
 }
 
@@ -311,7 +349,7 @@ function deleteHand(player,cardsCombination,gameInfo){
     }
     //check
     //check all the rules, make sure it's legal
-
+    checkRules(cardsCombination,gameInfo);
 //    this.dominantSuit = 'unknown';
 //    this.dominantRank = 2;
 //    this.dealer = -1;
@@ -357,6 +395,13 @@ function updateScore(players){
 
 
 function kitty(player,gameInfo,players){
+    //Drawing continues until everyone has drawn 25 cards and a pool of reserve cards (usually consisting of about 8 cards), remains.
+    // The Dealer then picks up all the cards, integrates them into his hand,
+    // and then discards the same number of cards into a pile in the center, known as the kitty.
+    // These cards are kept unopened throughout the duration of that round and may or may not be turned over thereafter,
+    // depending on the result of the last trick in the round.
+    //Sometimes, a player who has no trump, or, in other variations, no point cards in his hand, may force a redeal by showing his hand to everyone.
+    player.emit('sysInfo','Do kitty please');
     player.emit('kitty');
     //TODO: kitty
 
