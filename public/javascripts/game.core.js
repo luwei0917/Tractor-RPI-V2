@@ -255,6 +255,10 @@ function playing(players,gameInfo){
             if (isLegal === -1){
                 players[i].emit('DoAgain');
             }
+            else if(isLegal === -2){
+                players[i].emit('DoAgain');
+                players[i].emit('sysInfo','Not match with the leader')
+            }
             else{
                 //debug(5);
                 updateHand(player);
@@ -306,14 +310,16 @@ function isOnePair(cardCombination,gameInfo){
     if(gameInfo.dominantRank === cardCombination[0].value){
         wang = true;
     }
-    gameInfo.highCombination =[wang, cardCombination[0].value ];
+    gameInfo.highCombination =[wang,cardCombination[0].suit, cardCombination[0].value ];
     return true;
 }
+
 
 function isTwoPair(cardCombination,gameInfo){
     //is two pair
     return false;
 }
+
 function isThirdPair(cardCombination,gameInfo){
     //is third pair
     return false;
@@ -321,6 +327,7 @@ function isThirdPair(cardCombination,gameInfo){
 
 function isSingle(cardCombination, gameInfo){
     // high card
+
     return false;
 }
 function isMultiple(cardCombination,gameInfo){
@@ -348,6 +355,21 @@ function checkRules(cardCombination, gameInfo){
         // Only when a player does not have any other card in the suit played,
         // then he is allowed to play cards of other suits or ruff the combination with the same number of consecutive pairs in the trump suit.
         if (isConsecutivePair(cardCombination, gameInfo)) {
+        }
+
+
+        //Only two identical cards are considered doubles, so two different-suited trump rank cards,
+        // two ordinary non-trump cards with the same value, or a combination of a Red Joker and a Black Joker are not counted.
+        // For example, if 7♣ is trump, 7♠-7♥, or Q♠-Q♦ are not considered doubles despite them being of equal rank (or in the first case, both in the trump suit).
+        else if (isOnePair(cardCombination, gameInfo)) {
+            return 1; // 1 means good
+        }
+        //For double cards lead, other players must also follow suit with double cards, if they have;
+        // for players who do not have double cards in the suit lead, they may either play separate cards in the same suit,
+        // any two cards from other suits, or a double from the trump suit to ruff the trick. In this case, the highest-ordered trump doubles,
+        // if they are played, wins the trick; otherwise the highest-ordered doubles in the suit lead wins.
+        // Two singles may not beat a double even if they are both higher-ordered than the double (for trump 7♣, 9♦-9♦ beats J♦-Q♦ or even J♣-Q♣, if diamond doubles were led).
+        else if(isTwoPair(cardCombination,gameInfo)){
         }
 
         //Combination of multiple cards
@@ -378,20 +400,29 @@ function checkRules(cardCombination, gameInfo){
         else if (isSingle(cardCombination, gameInfo)) {
 
         }
-        //Only two identical cards are considered doubles, so two different-suited trump rank cards,
-        // two ordinary non-trump cards with the same value, or a combination of a Red Joker and a Black Joker are not counted.
-        // For example, if 7♣ is trump, 7♠-7♥, or Q♠-Q♦ are not considered doubles despite them being of equal rank (or in the first case, both in the trump suit).
-        else if (isOnePair(cardCombination, gameInfo)) {
-            return true;
-        }
-        //For double cards lead, other players must also follow suit with double cards, if they have;
-        // for players who do not have double cards in the suit lead, they may either play separate cards in the same suit,
-        // any two cards from other suits, or a double from the trump suit to ruff the trick. In this case, the highest-ordered trump doubles,
-        // if they are played, wins the trick; otherwise the highest-ordered doubles in the suit lead wins.
-        // Two singles may not beat a double even if they are both higher-ordered than the double (for trump 7♣, 9♦-9♦ beats J♦-Q♦ or even J♣-Q♣, if diamond doubles were led).
+
 
     }
+    else{
+        //follower
+        var rule = gameInfo.roundRule;
+        if(rule === 'isOnePair'){
+            if(cardCombination.length != 2){
+                return -1
+            }
+            var wang = false;
+            if(gameInfo.dominantSuit === cardCombination[0].suit){
+                wang = true;
+            }
+            if(gameInfo.dominantRank === cardCombination[0].value){
+                wang = true;
+            }
 
+        }
+        else if(rule === 'isMultiple'){
+
+        }
+    }
 }
 
 function deleteHand(player,cardsCombination,gameInfo){
@@ -411,7 +442,11 @@ function deleteHand(player,cardsCombination,gameInfo){
     //check
     //check all the rules, make sure it's legal
     //sort with
-    checkRules(cardsCombination,gameInfo);
+    var isLegal = checkRules(cardsCombination,gameInfo);
+    if(isLegal === -1){
+        return -2;
+    }
+
 //    this.dominantSuit = 'unknown';
 //    this.dominantRank = 2;
 //    this.dealer = -1;
