@@ -1,7 +1,6 @@
 //This is the baby of Wei Lu
+//Mon 11:39
 
-//Mon 7:31pm
-//8:44pm
 DECK_NUM = 2;
 SUIT_NUM = 4;
 VALUE_NUM = 13;
@@ -223,6 +222,21 @@ function playing(players,gameInfo){
     // and should be kept, but other cards may be similarly discarded.
 
     console.log('OK. please start your trick');
+    //before start the game we need to change joker to the dominant suit,(for later convenience)
+    //find dominantSuit
+    var dominantSuit = -1;
+    for(var i = 1; i< 5 ;i++){
+        if(ALL_SUIT[i] === gameInfo.dominantSuit){
+            dominantSuit = i;
+        }
+    }
+//    for (var i =0 ;i<4 ;i++){
+//        for(var j = 0; j < players[i].suit[0].length ; j++){
+//            var temp = new Card(players[i].suit[0][j].suit , players[i].suit[0][j].value+15);
+//             // A is 14, other domintant rank is 15, joker is 16.
+//            players[i].suit[dominantSuit].push(temp);
+//        }
+//
     var done = false;
 
     gameInfo.count = 0;
@@ -244,6 +258,10 @@ function playing(players,gameInfo){
             var cardsCombination = [];
             for(var i = 0; i< result.length ; i++){
                 //result[i].value = parseInt(result[i].value);
+                if(result[i].suit === 'jokers'){
+                    result[i].suit = gameInfo.dominantSuit;
+                    result[i].value = result[i].value + 13;
+                }
                 var temp = new Card(result[i].suit, result[i].value);
                 cardsCombination.push(temp);
                 console.log( ' used card ' + temp.suit + ' ' + temp.value);
@@ -379,6 +397,15 @@ function checkRules(cardCombination, gameInfo, players){
         else if(isTwoPair(cardCombination,gameInfo)){
         }
 
+        //Single or double cards
+        //Any single card may be lead. Players must follow suit if they have cards in the same suit;
+        // if a trump card is lead, other players must play a trump card, if they still have any.
+        // The highest trump, or, if no trump is played, the highest-ordered card of the suit lead takes the trick.
+        // In case of ties, the first highest card played wins the trick.
+        else if (isSingle(cardCombination, gameInfo)) {
+
+        }
+
         //Combination of multiple cards
         //A player may lead a combination of multiple cards if he has them,
         // provided that each of the singles or doubles played are the largest in the suit and no other player has larger combinations in that round.
@@ -399,14 +426,7 @@ function checkRules(cardCombination, gameInfo, players){
         }
 
 
-        //Single or double cards
-        //Any single card may be lead. Players must follow suit if they have cards in the same suit;
-        // if a trump card is lead, other players must play a trump card, if they still have any.
-        // The highest trump, or, if no trump is played, the highest-ordered card of the suit lead takes the trick.
-        // In case of ties, the first highest card played wins the trick.
-        else if (isSingle(cardCombination, gameInfo)) {
 
-        }
 
 
     }
@@ -415,7 +435,7 @@ function checkRules(cardCombination, gameInfo, players){
         var rule = gameInfo.roundRule;
         if(rule === 'isOnePair'){
             if(cardCombination.length != 2){
-                return -1
+                return -1   // -1 mean not match
             }
             var wang = false;
             if(gameInfo.dominantSuit === cardCombination[0].suit){
@@ -424,7 +444,16 @@ function checkRules(cardCombination, gameInfo, players){
             if(gameInfo.dominantRank === cardCombination[0].value){
                 wang = true;
             }
+            var haveWang = gameInfo.highCombination[0];
+            if(haveWang && wang){
 
+            }
+            else if(wang){
+
+            }
+            else if(haveWang === false && wang === false){
+
+            }
         }
         else if(rule === 'isConsecutivePair'){
 
@@ -454,6 +483,7 @@ function deleteHand(player,cardsCombination,gameInfo ,players){
     //sort with
     var isLegal = checkRules(cardsCombination,gameInfo,players);
     if(isLegal === -1){
+        //-1 mean not match
         return -2;
     }
 
