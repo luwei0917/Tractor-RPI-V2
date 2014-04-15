@@ -55,6 +55,9 @@ $(document).ready(function () {
             for (var i = 0; i < selected.length; i++) {
                 list.push({suit: selected[i].getAttribute('msuit'), value: parseInt(selected[i].getAttribute('mvalue'))})
                 $('#' + selected[i].getAttribute('id')).css('display', 'none');
+                console.log('aaaaabbbbb')
+                console.log(i)
+                console.log($('#' + selected[i].getAttribute('id')));
                 $('#' + selected[i].getAttribute('id')).removeClass('select');
                 //hehe
             }
