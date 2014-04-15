@@ -1,6 +1,6 @@
 //This is the baby of Wei Lu
 //Mon 11:39
-
+//ll
 DECK_NUM = 2;
 SUIT_NUM = 4;
 VALUE_NUM = 13;
@@ -306,6 +306,35 @@ function playing(players,gameInfo){
 
 function isConsecutivePair(cardCombination,gameInfo){
     //is Consecutive Pair
+    console.log('isConsecutivePair start !!!')
+    //console.log(cardCombination);
+    //console.log(gameInfo);
+    if (cardCombination.length < 3)
+        return false;
+    var cntr = 0;
+    for (var i = 0; i < cardCombination.length - 3; i++)
+    {
+        console.log(cardCombination[i])
+        console.log(cardCombination[i + 1])
+        if (cardCombination[i].value === cardCombination[i+1].value && cardCombination[i].suit === cardCombination[i+1].suit)
+        {
+            console.log(cardCombination[i+3].suit)
+            console.log(cardCombination[i].suit)
+
+            if (cardCombination[i+2].suit === cardCombination[i].suit && cardCombination[i+3].suit === cardCombination[i].suit)
+            {
+                console.log(cardCombination[i+2].value + 1)
+                console.log(cardCombination[i].value)
+                if (cardCombination[i+2].value + 1 === cardCombination[i].value && cardCombination[i+3].value + 1 === cardCombination[i].value) {
+                    console.log('i GOT  2 c pair');
+                    return true;
+                }
+            }
+        }
+    }
+    console.log('isConsecutivePair end')
+    return false;
+
 }
 
 function isOnePair(cardCombination,gameInfo){
