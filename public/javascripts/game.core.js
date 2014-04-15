@@ -325,7 +325,15 @@ function isSingle(cardCombination, gameInfo){
 }
 function isMultiple(cardCombination,gameInfo){
     //Combination of multiple cards
-    return false;
+    var roundSuit = cardCombination[0].suit;
+    for (var i; i<cardCombination.length;i++) {
+        if (cardCombination[i].suit != roundSuit) {
+            return false;
+        }
+    }
+    gameInfo.roundRule = 'isMultiple';
+    gameInfo.highCombination = cardCombination.slice(0);
+    return true;
 }
 
 function checkRules(cardCombination, gameInfo){
