@@ -169,7 +169,6 @@ function addCard(player,card){
         }
     }
     player.emit('newcard',card,num);
-
 }
 
 function sendCard(card,player,dominantRank,callback){
@@ -261,7 +260,8 @@ function playing(players,gameInfo){
                 updateHand(player);
                 player.broadcast.to(player.game).emit('otherTricks',result,gameInfo.currentPlayer);
                 player.emit('otherTricks',result,gameInfo.currentPlayer);
-
+                debug(gameInfo.roundRule);
+                player.emit('sysInfo',gameInfo.roundRule);
                 player.emit('stop');
                 //next
                 gameInfo.count++;
@@ -282,30 +282,50 @@ function playing(players,gameInfo){
 }
 
 
-function isConsecutivePair(cardCombination,gameInfo,isLeader){
+function isConsecutivePair(cardCombination,gameInfo){
     //is Consecutive Pair
 
 }
 
-function isOnePair(cardCombination,gameInfo,isLeader){
+function isOnePair(cardCombination,gameInfo){
     //is one pair
-
+    if(cardCombination.length != 2) {
+        return false;
+    }
+    if(cardCombination[0].suit != cardCombination[1].suit){
+        return false;
+    }
+    if(cardCombination[0].value != cardCombination[1].value){
+        return false;
+    }
+    gameInfo.roundRule = 'isOnePair';
+    var wang = false;
+    if(gameInfo.dominantSuit === cardCombination[0].suit){
+        wang = true;
+    }
+    if(gameInfo.dominantRank === cardCombination[0].value){
+        wang = true;
+    }
+    gameInfo.highCombination =[wang, cardCombination[0].value ];
+    return true;
 }
-function isTwoPair(cardCombination,gameInfo,isLeader){
+
+function isTwoPair(cardCombination,gameInfo){
     //is two pair
-
+    return false;
 }
-function isThirdPair(cardCombination,gameInfo,isLeader){
+function isThirdPair(cardCombination,gameInfo){
     //is third pair
-
+    return false;
 }
 
-function isSingle(cardCombination, gameInfo,isLeader){
+function isSingle(cardCombination, gameInfo){
     // high card
-
+    return false;
 }
-function isMultiple(cardCombination,gameInfo,isLeader){
+function isMultiple(cardCombination,gameInfo){
     //Combination of multiple cards
+    return false;
 }
 
 function checkRules(cardCombination, gameInfo){
@@ -313,65 +333,64 @@ function checkRules(cardCombination, gameInfo){
     var isLeader = false;
     if(gameInfo.currentPlayer === gameInfo.leader) {
         isLeader = true;
+
+        //A lead may be of one of four types, each with different rules dealing with what can be played on it.
+        // As a rule of thumb, when any card or combination of cards is lead, other players must always follow the number of card(s) played.
+
+        //Consecutive double cards
+        //If a player has consecutive pairs of cards in the same suit (trump or non-trump), he may lead it as a group.
+        // In this case, other players must follow suit by playing cards according to the following priority, if they have them:
+
+        //Other consecutive doubles in the same suit
+        //Other doubles in the same suit
+        //Other singles in the same suit
+        //The first combination, if all consecutive and of greater order than the suit lead, wins the trick.
+        // Only when a player does not have any other card in the suit played,
+        // then he is allowed to play cards of other suits or ruff the combination with the same number of consecutive pairs in the trump suit.
+        if (isConsecutivePair(cardCombination, gameInfo)) {
+        }
+
+        //Combination of multiple cards
+        //A player may lead a combination of multiple cards if he has them,
+        // provided that each of the singles or doubles played are the largest in the suit and no other player has larger combinations in that round.
+        // Leading such combinations usually result in the leading player's favour.
+
+        //If any card(s) in the combination may be bested by another player in the suit lead,
+        // he will be asked, by that player, to take back the cards that are the largest in the suit,
+        // and play any of the single/double cards that may be bested as penalty.
+        //    If the cards are consecutive doubles, the player is exempted from the above rule.
+        //    Any non-trump combinations played are subjected to be bested (ruffed) by trump cards played by other players.
+        // Combinations ruffed do not require taking back of cards, but this is not guaranteed (see rule 1 above).
+        //Any single trump card or trump doubles may, respectively, beat a single card or double cards in the combination.
+        //   Consecutive non-trump doubles may only be ruffed by consecutive trump doubles.
+        //    Any combinations with cards that are not trump, yet do not follow the suit lead may not take the trick.
+        //The table below describes whether some combinations are considered as consecutive doubles; if otherwise, the cards may still be lead, but will instead follow the multiple-cards combination rules (see next section).
+        else if (isMultiple(cardCombination, gameInfo)) {
+
+        }
+
+
+        //Single or double cards
+        //Any single card may be lead. Players must follow suit if they have cards in the same suit;
+        // if a trump card is lead, other players must play a trump card, if they still have any.
+        // The highest trump, or, if no trump is played, the highest-ordered card of the suit lead takes the trick.
+        // In case of ties, the first highest card played wins the trick.
+        else if (isSingle(cardCombination, gameInfo)) {
+
+        }
+        //Only two identical cards are considered doubles, so two different-suited trump rank cards,
+        // two ordinary non-trump cards with the same value, or a combination of a Red Joker and a Black Joker are not counted.
+        // For example, if 7♣ is trump, 7♠-7♥, or Q♠-Q♦ are not considered doubles despite them being of equal rank (or in the first case, both in the trump suit).
+        else if (isOnePair(cardCombination, gameInfo)) {
+            return true;
+        }
+        //For double cards lead, other players must also follow suit with double cards, if they have;
+        // for players who do not have double cards in the suit lead, they may either play separate cards in the same suit,
+        // any two cards from other suits, or a double from the trump suit to ruff the trick. In this case, the highest-ordered trump doubles,
+        // if they are played, wins the trick; otherwise the highest-ordered doubles in the suit lead wins.
+        // Two singles may not beat a double even if they are both higher-ordered than the double (for trump 7♣, 9♦-9♦ beats J♦-Q♦ or even J♣-Q♣, if diamond doubles were led).
+
     }
-    //A lead may be of one of four types, each with different rules dealing with what can be played on it.
-    // As a rule of thumb, when any card or combination of cards is lead, other players must always follow the number of card(s) played.
-
-    //Consecutive double cards
-    //If a player has consecutive pairs of cards in the same suit (trump or non-trump), he may lead it as a group.
-    // In this case, other players must follow suit by playing cards according to the following priority, if they have them:
-
-    //Other consecutive doubles in the same suit
-    //Other doubles in the same suit
-    //Other singles in the same suit
-    //The first combination, if all consecutive and of greater order than the suit lead, wins the trick.
-    // Only when a player does not have any other card in the suit played,
-    // then he is allowed to play cards of other suits or ruff the combination with the same number of consecutive pairs in the trump suit.
-    if(isConsecutivePair(cardCombination,gameInfo,isLeader)){
-
-    }
-
-    //Combination of multiple cards
-    //A player may lead a combination of multiple cards if he has them,
-    // provided that each of the singles or doubles played are the largest in the suit and no other player has larger combinations in that round.
-    // Leading such combinations usually result in the leading player's favour.
-
-    //If any card(s) in the combination may be bested by another player in the suit lead,
-    // he will be asked, by that player, to take back the cards that are the largest in the suit,
-    // and play any of the single/double cards that may be bested as penalty.
-    //    If the cards are consecutive doubles, the player is exempted from the above rule.
-    //    Any non-trump combinations played are subjected to be bested (ruffed) by trump cards played by other players.
-    // Combinations ruffed do not require taking back of cards, but this is not guaranteed (see rule 1 above).
-    //Any single trump card or trump doubles may, respectively, beat a single card or double cards in the combination.
-    //   Consecutive non-trump doubles may only be ruffed by consecutive trump doubles.
-    //    Any combinations with cards that are not trump, yet do not follow the suit lead may not take the trick.
-    //The table below describes whether some combinations are considered as consecutive doubles; if otherwise, the cards may still be lead, but will instead follow the multiple-cards combination rules (see next section).
-    else if(isMultiple(cardCombination,gameInfo,isLeader)){
-
-    }
-
-
-    //Single or double cards
-    //Any single card may be lead. Players must follow suit if they have cards in the same suit;
-    // if a trump card is lead, other players must play a trump card, if they still have any.
-    // The highest trump, or, if no trump is played, the highest-ordered card of the suit lead takes the trick.
-    // In case of ties, the first highest card played wins the trick.
-    else if(isSingle(cardCombination,gameInfo,isLeader)){
-
-    }
-    //Only two identical cards are considered doubles, so two different-suited trump rank cards,
-    // two ordinary non-trump cards with the same value, or a combination of a Red Joker and a Black Joker are not counted.
-    // For example, if 7♣ is trump, 7♠-7♥, or Q♠-Q♦ are not considered doubles despite them being of equal rank (or in the first case, both in the trump suit).
-    else if(isOnePair(cardCombination,gameInfo,isLeader)){
-
-    }
-    //For double cards lead, other players must also follow suit with double cards, if they have;
-    // for players who do not have double cards in the suit lead, they may either play separate cards in the same suit,
-    // any two cards from other suits, or a double from the trump suit to ruff the trick. In this case, the highest-ordered trump doubles,
-    // if they are played, wins the trick; otherwise the highest-ordered doubles in the suit lead wins.
-    // Two singles may not beat a double even if they are both higher-ordered than the double (for trump 7♣, 9♦-9♦ beats J♦-Q♦ or even J♣-Q♣, if diamond doubles were led).
-
-
 
 }
 
@@ -391,6 +410,7 @@ function deleteHand(player,cardsCombination,gameInfo){
     }
     //check
     //check all the rules, make sure it's legal
+    //sort with
     checkRules(cardsCombination,gameInfo);
 //    this.dominantSuit = 'unknown';
 //    this.dominantRank = 2;
