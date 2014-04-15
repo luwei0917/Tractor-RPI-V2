@@ -5,6 +5,7 @@ $(document).ready(function(){
         $('#gamestart').fadeOut('fast');
         //$('#anewroom').load('/room1')
         //connect_to_server();
+        send_msg('PlayerName','#inputName');
         window.open('/room1','_self');
     });
 
