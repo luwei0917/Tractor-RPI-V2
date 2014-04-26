@@ -9,6 +9,14 @@ $(document).ready(function () {
         window.open('/room1', '_self');
     });
 
+    $('#thelogin').click(function () {
+        $('#thelogin').fadeOut('fast');
+        //$('#anewroom').load('/room1')
+        //connect_to_server();
+        //send_msg('PlayerName','#inputName');
+        window.open('/loginpage');
+    });
+
     $('#button1').click(function () {
         send_msg('button', 'button1');
     });
