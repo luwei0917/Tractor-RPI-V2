@@ -1,6 +1,6 @@
 //This is the baby of Wei Lu
-//Mon 11:39
-
+//Friday
+//ll
 DECK_NUM = 2;
 SUIT_NUM = 4;
 VALUE_NUM = 13;
@@ -73,6 +73,7 @@ function GameInfo(){
     this.nextRoundLeader = -1;
     this.roundRule = 'unknown';
     this.kitty = [];
+    this.allSuits = [];
 
 }
 
@@ -213,6 +214,43 @@ function nextPlayer(i){
     return (i+1)%4;
 }
 
+function suitOrder(gameInfo){
+    var suits =[];
+    suits.push(gameInfo.dominantSuit);
+    for(var i =0 ;i<ALL_SUIT.length;i++){
+        if(gameInfo.dominantSuit != ALL_SUIT[i]){
+            suits.push(ALL_SUIT[i]);
+        }
+    }
+    gameInfo.allSuits = suits;
+}
+function reorganize(players,gameInfo){
+    //we want sort joker into the dominant suit
+    // A new set of suits
+    suitOrder(gameInfo);
+    var mynewsuits =  new Array(4);
+    for(var i =0 ;gameInfo.allSuits.length ; i++){
+        mynewsuits[i] = [];
+    }
+
+    for(var i =0 ;i<players.length;i++){
+        var player = players[i];
+        for(var j =0;j< player.suit.length ;j++ ){
+            var suit = player.suit[j];
+            //where to go
+            for(var k = 0; k < gameInfo.allSuits.length;k++){
+
+            }
+            for(var k = 0; k < suit.length; k++){
+                // go to the right suit
+
+            }
+        }
+    }
+    //we also want sort the cards in dominant rank into dominant suit
+
+
+}
 function playing(players,gameInfo){
     //The Dealer leads the first trick with any single card or combinations of cards, and the game proceeds like most trick-taking games,
     // where players take turn to play their cards in a counter-clockwise direction,
@@ -230,13 +268,17 @@ function playing(players,gameInfo){
             dominantSuit = i;
         }
     }
-//    for (var i =0 ;i<4 ;i++){
-//        for(var j = 0; j < players[i].suit[0].length ; j++){
-//            var temp = new Card(players[i].suit[0][j].suit , players[i].suit[0][j].value+15);
-//             // A is 14, other domintant rank is 15, joker is 16.
-//            players[i].suit[dominantSuit].push(temp);
-//        }
-//
+    //    for (var i =0 ;i<4 ;i++){
+    //        for(var j = 0; j < players[i].suit[0].length ; j++){
+    //            var temp = new Card(players[i].suit[0][j].suit , players[i].suit[0][j].value+15);
+    //             // A is 14, other domintant rank is 15, joker is 16.
+    //            players[i].suit[dominantSuit].push(temp);
+    //        }
+    //
+
+    //reorganize the cards in players' hand
+    //reorganize(players,gameInfo);
+
     var done = false;
 
     gameInfo.count = 0;
@@ -271,11 +313,11 @@ function playing(players,gameInfo){
             // if want he want to play is not legal. Tell him.
             //deleteHand(player , cardsCombination);
             if (isLegal === -1){
-                players[i].emit('DoAgain');
+                player.emit('DoAgain');
             }
             else if(isLegal === -2){
-                players[i].emit('DoAgain');
-                players[i].emit('sysInfo','Not match with the leader')
+                player.emit('DoAgain');
+                player.emit('sysInfo','Not match with the leader')
             }
             else{
                 //debug(5);
@@ -306,29 +348,83 @@ function playing(players,gameInfo){
 
 function isConsecutivePair(cardCombination,gameInfo){
     //is Consecutive Pair
+    console.log('isConsecutivePair start !!!')
+    //console.log(cardCombination);
+    //console.log(gameInfo);
+    if (cardCombination.length < 3)
+        return false;
+    var cntr = 0;
+    for (var i = 0; i < cardCombination.length - 3; i++)
+    {
+        console.log(cardCombination[i])
+        console.log(cardCombination[i + 1])
+        if (cardCombination[i].value === cardCombination[i+1].value && cardCombination[i].suit === cardCombination[i+1].suit)
+        {
+            console.log(cardCombination[i+3].suit)
+            console.log(cardCombination[i].suit)
+
+            if (cardCombination[i+2].suit === cardCombination[i].suit && cardCombination[i+3].suit === cardCombination[i].suit)
+            {
+                console.log(cardCombination[i+2].value + 1)
+                console.log(cardCombination[i].value)
+                if (cardCombination[i+2].value + 1 === cardCombination[i].value && cardCombination[i+3].value + 1 === cardCombination[i].value) {
+                    console.log('i GOT  2 c pair');
+                    return true;
+                }
+            }
+        }
+    }
+    console.log('isConsecutivePair end')
+    return false;
+
 }
 
+function haveSameSuit(cardCombination,gameInfo) {
+    var firstCardSuit = cardCombination[0].suit;
+    for(var i = 1;i<cardCombination.length; i++){
+        if(cardCombination[i].suit != firstCardSuit){
+            return false;
+        }
+    }
+    return true;
+}
+function haveOnePair(cardCombination,gameInfo){
+    // assume input cardCombination is a list of cards sorted, and all in same suit.
+    var preValue = cardCombination[0].value;
+    for(var i = 1; i< cardCombination.length ;i++){
+        if(preValue === cardCombination[i].value){
+            return i-1; // The location of the first card in this pair
+        }
+        preValue = cardCombination[i].value;
+    }
+    return -1;
+}
 function isOnePair(cardCombination,gameInfo){
     //is one pair
     if(cardCombination.length != 2) {
         return false;
     }
-    if(cardCombination[0].suit != cardCombination[1].suit){
-        return false;
+//    if(cardCombination[0].suit != cardCombination[1].suit){
+//        return false;
+//    }
+//    if(cardCombination[0].value != cardCombination[1].value){
+//        return false;
+//    }
+    if(haveSameSuit(cardCombination,gameInfo)){
+        if(haveOnePair(cardCombination,gameInfo)){
+            gameInfo.roundRule = 'isOnePair';
+            var wang = false;
+            if(gameInfo.dominantSuit === cardCombination[0].suit){
+                wang = true;
+            }
+            if(gameInfo.dominantRank === cardCombination[0].value){
+                wang = true;
+            }
+            gameInfo.highCombination =[wang,cardCombination[0].suit, cardCombination[0].value ];
+            return true;
+        }
     }
-    if(cardCombination[0].value != cardCombination[1].value){
-        return false;
-    }
-    gameInfo.roundRule = 'isOnePair';
-    var wang = false;
-    if(gameInfo.dominantSuit === cardCombination[0].suit){
-        wang = true;
-    }
-    if(gameInfo.dominantRank === cardCombination[0].value){
-        wang = true;
-    }
-    gameInfo.highCombination =[wang,cardCombination[0].suit, cardCombination[0].value ];
-    return true;
+    return false;
 }
 
 
@@ -373,9 +469,11 @@ function isMultiple(cardCombination, gameInfo, players) {
                     if (cardCombination.length === 2 && (cardCombination[0].value === cardCombination[1].value) &&
                         (cardCombination[0].suit === cardCombination[1].suit)) {
                         gameInfo.roundRule = 'isOnePair';
+                        debug('Multiple cards with one pair');
                     }
                     else {
                         gameInfo.roundRule = 'isSingle';
+                        debug('Multiple cards with single');
                     }
                     var wang = false;
                     if (gameInfo.dominantSuit === cardCombination[0].suit) {
@@ -393,6 +491,7 @@ function isMultiple(cardCombination, gameInfo, players) {
 
     gameInfo.roundRule = 'isMultiple';
     gameInfo.highCombination = cardCombination.slice(0);
+    debug('Just multiple cards');
     return true;
 }
 
@@ -467,6 +566,7 @@ function checkRules(cardCombination, gameInfo, players){
 
     }
     else{
+        return true;
         //follower
         var rule = gameInfo.roundRule;
         if(rule === 'isOnePair'){
